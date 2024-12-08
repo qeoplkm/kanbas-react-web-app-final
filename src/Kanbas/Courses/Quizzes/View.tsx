@@ -28,13 +28,14 @@ export default function QuizView() {
     }
   };
 
-const handleInputChange = (
+  const handleInputChange = (
     e: React.ChangeEvent<
         HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
     >
 ) => {
     const { name, value } = e.target;
-    const answerUpdate = { questionId: name, updateAnswer: value };
+    const normalizedValue = value.toLowerCase(); // Normalize to lowercase
+    const answerUpdate = { questionId: name, updateAnswer: normalizedValue };
     if (qid) {
         quizClient.addAnswerToMap(qid, currentUser._id, answerUpdate);
     }

@@ -80,7 +80,7 @@ export default function QuestionEditor() {
     };
 
     const handleTrueFalseSelection = (boolVal: boolean) => {
-        setEditingQuestion((prev: any) => ({ ...prev, answer: boolVal.toString() }));
+        setEditingQuestion((prev: any) => ({ ...prev, answer: boolVal.toString().toLowerCase() }));
     };
 
     const handleQuestionTypeChange = (newType: string) => {
@@ -88,14 +88,11 @@ export default function QuestionEditor() {
 
         if (newType === "multiple-choice") {
             updatedQuestion.choices = updatedQuestion.choices || [""];
-            // If no answer selected yet, default to empty string
             if (!updatedQuestion.answer) updatedQuestion.answer = "";
         } else if (newType === "fill-in-the-blank") {
             updatedQuestion.choices = updatedQuestion.choices || [""];
-            // For fill-in-the-blank, set answer to first choice
             updatedQuestion.answer = updatedQuestion.choices[0] || "";
         } else if (newType === "true-false") {
-            // True-false does not need choices
             delete updatedQuestion.choices;
             updatedQuestion.answer = "true";
         }
@@ -106,7 +103,6 @@ export default function QuestionEditor() {
     const handleUpdateQuestion = async () => {
         if (!editingQuestionId || !editingQuestion) return;
 
-        // Ensure answer field is not undefined
         if (editingQuestion.type === "multiple-choice" && !editingQuestion.answer) {
             alert("Please select a correct answer before updating.");
             return;

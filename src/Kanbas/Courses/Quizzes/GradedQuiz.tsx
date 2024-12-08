@@ -14,58 +14,12 @@ export default function GradedQuiz() {
     const [answer, setAnswer] = useState<any>(null);
     const { currentUser } = useSelector((state: any) => state.accountReducer);
     const navigate = useNavigate();
+    console.log("answers:", answers);
+    console.log("answer:", answer);
+    console.log("questions:", questions);
 
-    const handleSubmitQuiz = async () => {
-        
-    };
 
-    useEffect(() => {
-        const fetchQuestions = async () => {
-            if (qid) {
-                try {
-                    const fetchedQuestions = await quizClient.getQuestions(qid);
-                    setQuestions(fetchedQuestions || []);
-                } catch (error) {
-                    console.error("Error fetching questions:", error);
-                    setQuestions([]);
-                }
-            }
-        };
-
-        const fetchAnswers = async () => {
-            if (qid) {
-                try {
-                    const fetchedAnswers = await quizClient.getAnswers(qid, currentUser._id);
-                    setAnswer(fetchedAnswers);
-                    setAnswers(fetchedAnswers.answers || {});
-                } catch (error) {
-                    console.error("Error fetching answers:", error);
-                }
-            }
-        };
-
-        const fetchQuiz = async () => {
-            if (qid) {
-                try {
-                    const fetchedQuiz = await quizClient.getQuiz(qid);
-                    setQuiz(fetchedQuiz);
-                } catch (error) {
-                    console.error("Error fetching quiz:", error);
-                    setQuiz(null);
-                }
-            }
-            setLoading(false);
-        };
-
-        fetchQuiz();
-        fetchQuestions();
-        fetchAnswers();
-    }, [qid, currentUser._id]);
-
-    if (!quiz) {
-        return <div>Quiz not found</div>;
-    }
-
+    
     const calculateScore = (questions: any[], answers: { [key: string]: any }) => {
         return questions.reduce((score, question) => {
           const userAnswer = answers[question._id];
@@ -108,11 +62,64 @@ export default function GradedQuiz() {
       };
 
     const earnedScore = calculateScore(questions, answers);
-    console.log("questions:", questions);
-    console.log("answers:", answer);
-    console.log("quiz:", quiz);
+
+    const handleSubmitQuiz = async () => {
+        
+    };
+
+    useEffect(() => {
+        const fetchQuestions = async () => {
+            if (qid) {
+                try {
+                    const fetchedQuestions = await quizClient.getQuestions(qid);
+                    setQuestions(fetchedQuestions || []);
+                } catch (error) {
+                    console.error("Error fetching questions:", error);
+                    setQuestions([]);
+                }
+            }
+        };
+
+        const fetchAnswers = async () => {
+            if (qid) {
+                try {
+                    const fetchedAnswers = await quizClient.getAnswers(qid, currentUser._id);
+                    setAnswer(fetchedAnswers);
+                    setAnswers(fetchedAnswers.answers || {});
+                } catch (error) {
+                    console.error("Error fetching answers:", error);
+                }
+            }
+        };
+
+        
+
+        const fetchQuiz = async () => {
+            if (qid) {
+                try {
+                    const fetchedQuiz = await quizClient.getQuiz(qid);
+                    setQuiz(fetchedQuiz);
+                } catch (error) {
+                    console.error("Error fetching quiz:", error);
+                    setQuiz(null);
+                }
+            }
+            setLoading(false);
+        };
+        
+
+        fetchQuiz();
+        fetchQuestions();
+        fetchAnswers();
+    }, [qid, currentUser._id]);
+
+    if (!quiz) {
+        return <div>Quiz not found</div>;
+    }
 
     
+
+   
 
     const renderQuestion = (question: any, index: number) => {
         if (!question) {
@@ -162,7 +169,8 @@ export default function GradedQuiz() {
                                                 name={question._id}
                                                 value={choice}
                                                 className="radio-input"
-                                                checked={answers[question._id] === choice}
+                                                checked={answers[question._id]?.toLowerCase() === choice.toLowerCase()}
+                                        
                                                 disabled
                                             />
                                             <label>{choice}</label>

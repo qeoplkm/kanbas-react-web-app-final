@@ -20,7 +20,6 @@ export default function Details() {
         } else {
             return;
         }
-        console.log(result);
         if (result) {
             setMaxAttempts(false);
             navigate(`/Kanbas/Courses/${cid}/Quizzes/${qid}/view`);
@@ -29,6 +28,9 @@ export default function Details() {
             return;
         }
     }
+    
+    
+
 
     const checkAvailableDate = () => {
         const currentDate = new Date();
@@ -55,6 +57,7 @@ export default function Details() {
         const fetchAnswers = async () => {
             if (qid && currentUser._id) {
                 const fetchedAnswers = await quizClient.getAnswers(qid, currentUser._id);
+                console.log("fetchedAnswers:", fetchedAnswers);
                 setAnswers(fetchedAnswers);
                 setLoading(false);
             }
