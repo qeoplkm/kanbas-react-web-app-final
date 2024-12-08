@@ -12,7 +12,6 @@ export default function GradedQuiz() {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
     const [answers, setAnswers] = useState<{ [key: string]: any }>({});
     const [answer, setAnswer] = useState<any>(null);
-    console.log("answer:", answer);
     const { currentUser } = useSelector((state: any) => state.accountReducer);
     const navigate = useNavigate();
 
@@ -67,10 +66,6 @@ export default function GradedQuiz() {
         return <div>Quiz not found</div>;
     }
 
-    // Compute total possible points
-    const totalPoints = questions.reduce((sum, q) => sum + (q.points || 0), 0);
-
-    // Function to calculate student's score based on their answers
     const calculateScore = (questions: any[], answers: { [key: string]: any }) => {
         return questions.reduce((score, question) => {
           const userAnswer = answers[question._id];
@@ -82,11 +77,19 @@ export default function GradedQuiz() {
       
           switch (question.type) {
             case "multiple-choice":
+                if (userAnswer === correctAnswer) {
+                    return score + (question.points || 0);
+                }
+                break;
+
             case "true-false":
-              if (userAnswer === correctAnswer) {
-                return score + (question.points || 0);
-              }
-              break;
+                if (
+                    userAnswer && correctAnswer &&
+                    userAnswer.toString().toLowerCase() === correctAnswer.toString().toLowerCase()
+                ) {
+                    return score + (question.points || 0);
+                }
+                break;
             case "fill-in-the-blank":
               if (
                 userAnswer &&
@@ -105,6 +108,11 @@ export default function GradedQuiz() {
       };
 
     const earnedScore = calculateScore(questions, answers);
+    console.log("questions:", questions);
+    console.log("answers:", answer);
+    console.log("quiz:", quiz);
+
+    
 
     const renderQuestion = (question: any, index: number) => {
         if (!question) {
@@ -147,7 +155,7 @@ export default function GradedQuiz() {
                         case "true-false":
                             return (
                                 <ul className="options-list">
-                                    {["True", "False"].map((choice, idx) => (
+                                    {["true", "false"].map((choice, idx) => (
                                         <li key={`${question._id}-choice-${idx}`} className="option-item">
                                             <input
                                                 type="radio"
@@ -199,7 +207,7 @@ export default function GradedQuiz() {
         <div className="quiz-container">
             <h1 className="quiz-title">{quiz.name}</h1>
             <p className="quiz-instructions">{quiz.instructions}</p>
-            <h3>Grade: {earnedScore}/{totalPoints}</h3>
+            <h3>Grade: {earnedScore}/{quiz.points}</h3>
             <hr className="quiz-divider" />
 
             {quiz.one_at_a_time ? (

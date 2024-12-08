@@ -110,11 +110,10 @@ export default function DetailsEditor() {
                     toolbarClassName="toolbarClassName"
                     wrapperClassName="wrapperClassName"
                     editorClassName="editorClassName"
-                    onEditorStateChange={setEditorState} // Update the EditorState
-                    editorStyle={{ border: "1px solid #ced4da", borderRadius: "0.25rem", padding: "0.5rem" }} // Add outline
+                    onEditorStateChange={setEditorState} 
+                    editorStyle={{ border: "1px solid #ced4da", borderRadius: "0.25rem", padding: "0.5rem" }} 
                 />
             </div>
-            {/* Grid begins here */}
             <div className="container mt-3">
                 <div className="row form-group mb-3">
                     <label className="col col-4 form-label text-end" htmlFor="wd-quiz-type">
@@ -170,6 +169,12 @@ export default function DetailsEditor() {
                             Number of Attempts: (0 for unlimited)
                         </label>
                         <input type="number" className="form-control mb-3" id="wd-number-of-attempts" placeholder="Number of Attempts" name="number_of_attempts" value={quiz.number_of_attempts || 1} onChange={handleInputChange}/>
+                        </div>
+                        <div className="mb-3">
+                        <label className="form-check-label" htmlFor="wd-number-of-attempts">
+                           Points:
+                        </label>
+                        <input type="number" className="form-control mb-3" id="wd-number-of-attempts" placeholder="Points" name="points" value={quiz.points || 0} onChange={handleInputChange}/>
                         </div>
                         <div className="mb-3">
                             <input className="form-check-input me-2" type="checkbox" id="wd-show-correct-answers" name="show_answers" checked={quiz.show_answers || ""} onChange={handleInputChange}/>
