@@ -116,8 +116,13 @@ export default function QuestionEditor() {
     const handleDeleteQuestion = async (questionId: string) => {
         if (!qid) return;
         if (window.confirm("Are you sure you want to delete this question?")) {
-            await questionClient.deleteQuestion(qid, questionId);
-            await fetchQuestions();
+            try {
+                await questionClient.deleteQuestion(questionId);
+                await fetchQuestions();
+            } catch (error) {
+                console.error("Error deleting question:", error);
+                alert("Failed to delete the question. Please try again.");
+            }
         }
     };
 

@@ -18,8 +18,7 @@ export const updateQuestion = async (questionId: string, question: any) => {
     return data;
 };
 
-
-export const deleteQuestion = async (quizId: string, questionId: string) => {
-    const response = await axiosWithCredentials.delete(`${QUIZ_API}/${quizId}/questions/${questionId}`);
+export const deleteQuestion = async (questionId: string) => {
+    const response = await axiosWithCredentials.delete(`${REMOTE_SERVER}/api/questions/${questionId}`);
     return response.data;
-}
+};

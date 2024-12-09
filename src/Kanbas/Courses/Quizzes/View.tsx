@@ -12,8 +12,8 @@ export default function QuizView() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
   const { currentUser } = useSelector((state: any) => state.accountReducer);
 
-
   const navigate = useNavigate();
+  
   const handleSubmitQuiz = async () => {
     let result = null;
     if (qid) {
@@ -32,14 +32,14 @@ export default function QuizView() {
     e: React.ChangeEvent<
         HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
     >
-) => {
+  ) => {
     const { name, value } = e.target;
     const normalizedValue = value.toLowerCase(); // Normalize to lowercase
     const answerUpdate = { questionId: name, updateAnswer: normalizedValue };
     if (qid) {
-        quizClient.addAnswerToMap(qid, currentUser._id, answerUpdate);
+      quizClient.addAnswerToMap(qid, currentUser._id, answerUpdate);
     }
-};
+  };
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -99,19 +99,19 @@ export default function QuizView() {
               return (
                 <ul className="options-list">
                   {(quiz.shuffle_answers ? question.choices.sort(() => Math.random() - 0.5) : question.choices)
-                  .map((choice: string, index: number) => (
+                  .map((choice: string, idx: number) => (
                   <li
-                  key={`${question._id}-choice-${index}`}
+                  key={`${question._id}-choice-${idx}`}
                   className="option-item"
                   >
                   <input onChange={handleInputChange}
                     type="radio"
                     name={question._id}
-                    id={`option-${index}`}
+                    id={`option-${idx}`}
                     value={choice}
                     className="radio-input"
                   />
-                  <label htmlFor={`option-${index}`}>{choice}</label>
+                  <label htmlFor={`option-${idx}`}>{choice}</label>
                   </li>
                   ))}
                 </ul>
@@ -123,7 +123,7 @@ export default function QuizView() {
                     <input onChange={handleInputChange}
                       type="radio"
                       name={question._id}
-                      value="True"
+                      value="true"
                       className="radio-input"
                     />
                     True
@@ -132,7 +132,7 @@ export default function QuizView() {
                     <input onChange={handleInputChange}
                       type="radio"
                       name={question._id}
-                      value="False"
+                      value="false"
                       className="radio-input"
                     />
                     False
