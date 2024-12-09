@@ -11,8 +11,8 @@ export default function Labs() {
   return (
     <Provider store={store}>
     <div>
-      <h1>Labs</h1>
-      <h2>Shuai Yao</h2>
+      <h1>Final Project</h1>
+      <h2>Team Name: Su9 (Members: Shuai Yao, Ruiqi Chen)</h2>
       <TOC />
       <Routes>
         <Route path="/" element={<Navigate to="Lab1" />} />
